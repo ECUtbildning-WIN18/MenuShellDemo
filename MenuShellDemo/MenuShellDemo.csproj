@@ -43,6 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\Database.cs" />
+    <Compile Include="Domain\User.cs" />
+    <Compile Include="Domain\View\AdministratorView.cs" />
+    <Compile Include="Domain\View\ReceptionistView.cs" />
+    <Compile Include="Domain\View\VeterinarianView.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
