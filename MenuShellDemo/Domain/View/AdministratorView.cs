@@ -14,7 +14,7 @@ namespace MenuShellDemo.Domain.View
                 Console.WriteLine("(1) Manage users");
                 Console.WriteLine("(2) Exit");
 
-                var keyInfo = Console.ReadKey();
+                var keyInfo = Console.ReadKey(true);
 
                 if (keyInfo.Key == ConsoleKey.D1)
                 {
