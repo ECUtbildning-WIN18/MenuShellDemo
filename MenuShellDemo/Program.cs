@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using MenuShellDemo.Domain;
+﻿using MenuShellDemo.Domain;
 using MenuShellDemo.Domain.View;
 
 namespace MenuShellDemo

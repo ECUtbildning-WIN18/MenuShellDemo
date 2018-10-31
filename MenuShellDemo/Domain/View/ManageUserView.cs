@@ -2,26 +2,31 @@
 
 namespace MenuShellDemo.Domain.View
 {
-    class AdministratorView
+    class ManageUserView
     {
-        public static void Display()
+        public void Display()
         {
             bool isRunning = true;
+            
 
             do
             {
                 Console.Clear();
-                Console.WriteLine("(1) Manage users");
-                Console.WriteLine("(2) Exit");
+                Console.WriteLine("(1) Add user");
+                Console.WriteLine("(2) Search user");
+                Console.WriteLine("(3) Exit");
 
                 var keyInfo = Console.ReadKey(true);
 
                 if (keyInfo.Key == ConsoleKey.D1)
                 {
-                    var manageUserView = new ManageUserView();
-                    manageUserView.Display();
+                    AddUserView.Display();
                 }
                 else if (keyInfo.Key == ConsoleKey.D2)
+                {
+                    SearchUserView.Display();
+                }
+                else if (keyInfo.Key == ConsoleKey.D3)
                 {
                     isRunning = false;
                 }
@@ -29,7 +34,6 @@ namespace MenuShellDemo.Domain.View
                 {
                     Console.WriteLine("Invalid input!");
                 }
-
 
             } while (isRunning);
         }
