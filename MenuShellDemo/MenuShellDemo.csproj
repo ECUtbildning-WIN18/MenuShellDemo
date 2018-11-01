@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\Database.cs" />
+    <Compile Include="Domain\SqlConnect.cs" />
     <Compile Include="Domain\User.cs" />
     <Compile Include="Domain\View\AddUserView.cs" />
     <Compile Include="Domain\View\AdministratorView.cs" />

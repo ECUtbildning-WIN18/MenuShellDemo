@@ -8,7 +8,6 @@ namespace MenuShellDemo.Domain.View
         {
             bool isRunning = true;
             
-
             do
             {
                 Console.Clear();
@@ -29,6 +28,7 @@ namespace MenuShellDemo.Domain.View
                 else if (keyInfo.Key == ConsoleKey.D3)
                 {
                     isRunning = false;
+                    AdministratorView.Display();
                 }
                 else
                 {

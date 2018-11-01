@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MenuShellDemo.Domain.View
 {
@@ -17,7 +20,8 @@ namespace MenuShellDemo.Domain.View
                 Console.WriteLine("# Search by username:\n");
 
                 var userNameSearch = Console.ReadLine();
-                var searchResult = Database.GetUsersStartingWithString(userNameSearch);
+                var dataBase = new Database();
+                var searchResult = dataBase.GetUsersStartingWithStringDB(userNameSearch); //Database.GetUsersStartingWithString(userNameSearch);
                 var userList = Database.Users;
 
                 if (searchResult.Any())
