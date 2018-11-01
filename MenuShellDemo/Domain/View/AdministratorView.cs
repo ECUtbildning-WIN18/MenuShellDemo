@@ -24,6 +24,7 @@ namespace MenuShellDemo.Domain.View
                 else if (keyInfo.Key == ConsoleKey.D2)
                 {
                     isRunning = false;
+                    Environment.Exit(0);
                 }
                 else
                 {
