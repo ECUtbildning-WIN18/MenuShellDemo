@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
+using MenuShellDemo.Domain;
+using MenuShellDemo.Domain.View;
 
 namespace MenuShellDemo
 {
@@ -10,6 +9,11 @@ namespace MenuShellDemo
     {
         static void Main(string[] args)
         {
+            Database.Users.Add("admin", new User("admin", "secret", "Administrator"));
+
+            var loginView = new LoginView();
+
+            loginView.Display();
         }
     }
 }
