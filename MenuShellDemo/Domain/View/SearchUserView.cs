@@ -21,14 +21,15 @@ namespace MenuShellDemo.Domain.View
 
                 var userNameSearch = Console.ReadLine();
                 var dataBase = new Database();
-                var searchResult = dataBase.GetUsersStartingWithStringDB(userNameSearch); //Database.GetUsersStartingWithString(userNameSearch);
+                var searchResult = dataBase.GetUsersStartingWithStringDb(userNameSearch); //Database.GetUsersStartingWithString(userNameSearch);
                 var userList = Database.Users;
 
                 if (searchResult.Any())
                 {
                     Console.Clear();
                     Console.WriteLine("  Search result\n");
-                    Database.PrintUserList(searchResult);
+                    //Database.PrintUserList(searchResult);
+                    Database.PrintUserListDb(searchResult);
                     Console.WriteLine("\n(D)elete  (C)ancel");
                     var input = Console.ReadKey(true);
                     switch (input.Key)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace MenuShellDemo.Domain
 {
@@ -33,115 +34,158 @@ namespace MenuShellDemo.Domain
         }
 
         //---------------SQL Database--------------------------
-        public Dictionary<string, User> ListUsersFromDB(string searchString)
+
+        public static Dictionary<string, User> GetUsersFromDb()
         {
-            var resultList = new Dictionary<string, User>();
-            var queryString = "SELECT * FROM Users";
-
-            using (var connection = SqlConnect.Connection())
+            using (var context = new MenuShellDbContext())
             {
-                var sqlCommand = new SqlCommand(queryString, connection);
-
-                try
-                {
-                    connection.Open();
-
-                    var reader = sqlCommand.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        var username = reader["UserName"].ToString();
-                        var password = reader["Password"].ToString();
-                        var role = reader["Role"].ToString();
-                        resultList.Add(username, new User(username, password, role));
-                    }
-
-                    reader.Close();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
-            }
-
-            return resultList;
-        }
-
-        public Dictionary<string, User> GetUsersStartingWithStringDB(string searchString)
-        {
-            var resultList = new Dictionary<string, User>();
-            var queryString = $"SELECT * FROM Users WHERE UserName LIKE '{searchString}%'";
-
-            using (var connection = SqlConnect.Connection())
-            {
-                var sqlCommand = new SqlCommand(queryString, connection);
-
-                try
-                {
-                    connection.Open();
-
-                    var reader = sqlCommand.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        var username = reader["Username"].ToString();
-                        var password = reader["Password"].ToString();
-                        var role = reader["Role"].ToString();
-                        resultList.Add(username, new User(username, password, role));
-                    }
-
-                    reader.Close();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
-            }
-
-            return resultList;
-        }
-
-        public void AddUserToDB(User user)
-        {
-            var queryString = $"INSERT INTO Users (UserName, Password, Role) " +
-                              $"VALUES('{user.Username}', '{user.Password}', '{user.Role}')";
-
-            using (var connection = SqlConnect.Connection())
-            {
-                try
-                {
-                    connection.Open();
-                    var sqlCommand = new SqlCommand(queryString, connection);
-                    sqlCommand.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
+                return context.Users.ToDictionary(x => x.Username);
             }
         }
 
-        public void DeleteUserFromDB(string username)
+        public static void PrintUserListDb(Dictionary<string, User> myDictionary)
         {
-            var queryString = $"DELETE FROM Users WHERE UserName = '{username}'";
-
-            using (var connection = SqlConnect.Connection())
+            foreach (var user in myDictionary)
             {
-                try
-                {
-                    connection.Open();
-                    var sqlCommand = new SqlCommand(queryString, connection);
-                    sqlCommand.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
+                Console.WriteLine($"{user.Value.Username} {user.Value.Role}");
             }
         }
+
+        //public Dictionary<string, User> ListUsersFromDB(string searchString)
+        //{
+        //    var resultList = new Dictionary<string, User>();
+        //    var queryString = "SELECT * FROM Users";
+
+        //    using (var connection = SqlConnect.Connection())
+        //    {
+        //        var sqlCommand = new SqlCommand(queryString, connection);
+
+        //        try
+        //        {
+        //            connection.Open();
+
+        //            var reader = sqlCommand.ExecuteReader();
+
+        //            while (reader.Read())
+        //            {
+        //                var username = reader["UserName"].ToString();
+        //                var password = reader["Password"].ToString();
+        //                var role = reader["Role"].ToString();
+        //                resultList.Add(username, new User(username, password, role));
+        //            }
+
+        //            reader.Close();
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            Console.WriteLine(e);
+        //            throw;
+        //        }
+        //    }
+
+        //    return resultList;
+        //}
+
+        public Dictionary<string, User> GetUsersStartingWithStringDb(string searchString)
+        {
+            var userDictionary = Database.GetUsersFromDb();
+            var usersFromDb = userDictionary.Where(x => x.Key.ToLower().StartsWith(searchString.ToLower())).ToDictionary(x => x.Key, x => x.Value);
+            return usersFromDb;
+        }
+
+        //public Dictionary<string, User> GetUsersStartingWithStringDb(string searchString)
+        //{
+        //    var resultList = new Dictionary<string, User>();
+        //    var queryString = $"SELECT * FROM Users WHERE UserName LIKE '{searchString}%'";
+
+        //    using (var connection = SqlConnect.Connection())
+        //    {
+        //        var sqlCommand = new SqlCommand(queryString, connection);
+
+        //        try
+        //        {
+        //            connection.Open();
+
+        //            var reader = sqlCommand.ExecuteReader();
+
+        //            while (reader.Read())
+        //            {
+        //                var username = reader["Username"].ToString();
+        //                var password = reader["Password"].ToString();
+        //                var role = reader["Role"].ToString();
+        //                resultList.Add(username, new User(username, password, role));
+        //            }
+
+        //            reader.Close();
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            Console.WriteLine(e);
+        //            throw;
+        //        }
+        //    }
+
+        //    return resultList;
+        //}
+
+        public void AddUserToDb(User user)
+        {
+            using (var context = new MenuShellDbContext())
+            {
+                context.Users.Add(user);
+                context.SaveChanges();
+            }
+        }
+
+        //public void AddUserToDB(User user)
+        //{
+        //    var queryString = $"INSERT INTO Users (UserName, Password, Role) " +
+        //                      $"VALUES('{user.Username}', '{user.Password}', '{user.Role}')";
+
+        //    using (var connection = SqlConnect.Connection())
+        //    {
+        //        try
+        //        {
+        //            connection.Open();
+        //            var sqlCommand = new SqlCommand(queryString, connection);
+        //            sqlCommand.ExecuteNonQuery();
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            Console.WriteLine(e);
+        //            throw;
+        //        }
+        //    }
+        //}
+
+        public void DeleteUserFromDb(string username)
+        {
+            using (var context = new MenuShellDbContext())
+            {
+                var deleteUser = context.Users.Where(x => x.Username == username).FirstOrDefault();
+                context.Users.Remove(deleteUser);
+                context.SaveChanges();
+            }
+        }
+
+        //public void DeleteUserFromDB(string username)
+        //{
+        //    var queryString = $"DELETE FROM Users WHERE UserName = '{username}'";
+
+        //    using (var connection = SqlConnect.Connection())
+        //    {
+        //        try
+        //        {
+        //            connection.Open();
+        //            var sqlCommand = new SqlCommand(queryString, connection);
+        //            sqlCommand.ExecuteNonQuery();
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            Console.WriteLine(e);
+        //            throw;
+        //        }
+        //    }
+        //}
     }
 }
