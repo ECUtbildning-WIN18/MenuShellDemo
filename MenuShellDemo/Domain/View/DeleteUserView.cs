@@ -22,7 +22,7 @@ namespace MenuShellDemo.Domain.View
             Console.WriteLine("  Search result\n");
             Database.PrintUserList(UserList);
             var dataBase = new Database();
-            dataBase.ListUsersFromDB("");
+            Database.GetUsersFromDb();
             Console.Write("\nDelete> ");
             var username = Console.ReadLine();
             Console.WriteLine($"\nDelete user {username}?  (Y)es (N)o (C)ancel");
@@ -34,7 +34,7 @@ namespace MenuShellDemo.Domain.View
                     if (SearchResult.Keys.Any(key => key.Equals(username)))
                     {
                         Database.DeleteUserFromList(UserList, username);
-                        dataBase.DeleteUserFromDB(username);
+                        dataBase.DeleteUserFromDb(username);
                         Console.WriteLine($"User { username} successfully deleted.");
                         Thread.Sleep(1500);
                         AdministratorView.Display();

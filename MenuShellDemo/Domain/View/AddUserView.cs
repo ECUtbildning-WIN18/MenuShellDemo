@@ -34,7 +34,7 @@ namespace MenuShellDemo.Domain.View
                     Database.Users.Add(user.Username, user);
 
                     var dataBase = new Database();
-                    dataBase.AddUserToDB(user);
+                    dataBase.AddUserToDb(user);
 
                     addedNewUser = true;
                     AdministratorView.Display();
